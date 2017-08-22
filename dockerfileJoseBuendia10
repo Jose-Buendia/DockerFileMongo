@@ -1,0 +1,33 @@
+#Uso de la imagen de ubunto
+FROM ubuntu
+
+#Le asigne un nombre a mi dosckerfile
+MAINTAINER Jose_Buendia
+
+#Corriende la imagen 
+RUN apt-get update
+
+#Agregue la clave de verificacion del paquete instalado
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+
+#Agregue MongoDB a la lista de fuentes del repositorio
+RUN echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | tee /etc/apt/sources.list.d/mongodb.list
+
+#Actualizar las fuentes del repositorio ejecutado una vez más.
+RUN apt-get update
+
+#Intalar el paquete de MongoDD
+RUN apt-get install -y mongodb-10gen
+
+#Crea por defecti el directorio 
+RUN mkdir -p /data/db
+
+#Exponer el puerto predeterminado
+EXPOSE 27017
+
+Puerto predeterminado para ejecutar el punto de entrada (MongoDB)
+CMD ["--port 27017"]
+
+#Establecer el comando del contenedor predeterminado.
+ENTRYPOINT usr/bin/mongod
+
